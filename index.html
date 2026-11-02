@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Limpiar metadatos GPS de fotos online gratis | CleanPhoto</title>
+<meta name="description" content="Quita la ubicación GPS y los metadatos EXIF de tus fotos, conviértelas a JPG ligero y descárgalas en ZIP. HEIC, PNG, WEBP. Privado: no se suben.">
+<!-- TODO: <link rel="canonical"> con tu dominio definitivo y og:image -->
+<!-- TODO: banner de consentimiento de cookies (CMP) al activar AdSense -->
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "CleanPhoto", "description": "Conversor masivo de imágenes y limpiador de metadatos GPS/EXIF, 100 % en el navegador.", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "inLanguage": "es", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "¿Mis fotos se suben a algún servidor?", "acceptedAnswer": {"@type": "Answer", "text": "No. Todo ocurre en tu navegador: las fotos se procesan en tu propio dispositivo y nunca salen de él. Por eso es seguro usarla con fotos de clientes, propiedades o vehículos."}}, {"@type": "Question", "name": "¿Cómo quito la ubicación de las fotos de una propiedad?", "acceptedAnswer": {"@type": "Answer", "text": "Arrastra las fotos a la herramienta. Cada imagen se vuelve a guardar como un JPG nuevo sin coordenadas GPS ni datos EXIF, y te avisamos cuáles traían ubicación. Después descárgalas en un ZIP."}}, {"@type": "Question", "name": "¿Funciona con las fotos HEIC del iPhone?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. Las fotos HEIC o HEIF se convierten a JPG, el formato que aceptan todos los portales. La primera vez se descarga el motor de conversión (unos 3 MB) y después queda en caché."}}, {"@type": "Question", "name": "¿Se pierde calidad al comprimir?", "acceptedAnswer": {"@type": "Answer", "text": "Al convertir a JPG se recomprime la imagen, pero con calidad 82 % y 1920 px la diferencia no se nota en pantalla y el archivo pesa mucho menos. Si necesitas más detalle, sube la calidad hasta 95 %."}}, {"@type": "Question", "name": "¿Se borran realmente todos los metadatos?", "acceptedAnswer": {"@type": "Answer", "text": "Sí. La foto se redibuja y se guarda como imagen nueva, así que no se copia ningún dato EXIF, GPS, IPTC ni XMP. Tampoco se conserva el perfil de color, y la orientación queda ya corregida."}}, {"@type": "Question", "name": "¿Hay un límite de fotos o de tamaño?", "acceptedAnswer": {"@type": "Answer", "text": "No hay un límite fijo; depende de la memoria de tu dispositivo. Para una foto HEIC se recomienda no pasar de ~50 MB, y en un celular conviene procesar por tandas de unas 50 fotos."}}, {"@type": "Question", "name": "¿Es gratis? ¿Necesito registrarme?", "acceptedAnswer": {"@type": "Answer", "text": "Es gratis y no requiere registro ni correo. El sitio se financia con publicidad."}}]}</script>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--tx:#0f1c2e;--mu:#5b6b80;--ac:#0b6bcb;--ac2:#e8f1fc;--bd:#d5deea;--ad:#eef1f5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1520;--card:#142030;--tx:#e8eef6;--mu:#9fb0c4;--ac:#5aa9ff;--ac2:#14304f;--bd:#26384d;--ad:#1a2838}}
+:root[data-theme="dark"]{--bg:#0d1520;--card:#142030;--tx:#e8eef6;--mu:#9fb0c4;--ac:#5aa9ff;--ac2:#14304f;--bd:#26384d;--ad:#1a2838}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:880px;margin:0 auto;padding:0 16px}
+header{padding:14px 0}.logo{font-weight:800;font-size:1.15rem}
+h1{font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.15;margin:.5em 0 .3em}
+h2{font-size:1.4rem;line-height:1.25;margin:0 0 .6em}h3{margin:.2em 0}
+.sub{color:var(--mu);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px}
+.drop{position:relative;display:block;border:2px dashed var(--ac);background:var(--ac2);border-radius:14px;padding:30px 14px;text-align:center;cursor:pointer}
+.drop.on,.drop:focus-within{outline:3px solid var(--ac)}
+.drop b{display:block;font-size:1.15rem}.drop span{color:var(--mu);font-size:.9rem}
+.file{position:absolute;width:1px;height:1px;opacity:0}
+.opts{display:flex;flex-wrap:wrap;gap:12px 22px;margin:14px 0 2px;align-items:center;font-size:.92rem}
+select{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--bd);background:var(--card);color:var(--tx)}
+.priv{font-size:.85rem;color:var(--mu);margin:10px 0 0}
+.row{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--bd)}
+.th{width:48px;height:48px;border-radius:8px;object-fit:cover;background:var(--ad);flex:none}
+.in{flex:1;min-width:0}.nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;font-size:.92rem}.mt{font-size:.8rem;color:var(--mu)}
+.bd{display:inline-block;padding:0 7px;border-radius:99px;font-size:.72rem;font-weight:700}.g1{background:#fde8c8;color:#7a4100}.g0{background:#d9f5e7;color:#0a5f3b}
+.btn{background:#0b6bcb;color:#fff;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-weight:700;cursor:pointer}
+.btn.s{background:transparent;color:var(--ac);border:1px solid var(--ac);padding:7px 12px;font-size:.85rem}
+.btn:disabled{opacity:.6;cursor:wait}
+.act{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}.act .btn:first-child{padding:13px 20px}
+.sum{font-size:.88rem;color:var(--mu);margin-top:10px}
+.ad{display:flex;align-items:center;justify-content:center;background:var(--ad);border:1px dashed var(--bd);color:var(--mu);font-weight:700;letter-spacing:.2em;font-size:.8rem;border-radius:10px;margin:22px 0}
+.ad.h{min-height:90px}.ad.m{min-height:250px}
+section{margin:38px 0}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.n{width:34px;height:34px;border-radius:50%;background:#0b6bcb;color:#fff;display:grid;place-items:center;font-weight:800;margin-bottom:6px}
+details{border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin:8px 0;background:var(--card)}summary{cursor:pointer;font-weight:700}details p{margin:.6em 0 0;color:var(--mu)}
+footer{border-top:1px solid var(--bd);padding:20px 0 34px;color:var(--mu);font-size:.85rem}
+dialog{border:1px solid var(--bd);border-radius:16px;background:var(--card);color:var(--tx);width:min(360px,92vw);padding:22px 18px 18px;text-align:center}dialog::backdrop{background:rgba(0,0,0,.55)}
+dialog .ad{min-height:250px;margin:12px 0}
+.x{position:absolute;top:6px;right:10px;border:0;background:none;font-size:1.7rem;line-height:1;color:var(--mu);cursor:pointer}
+#toast{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(250px,calc(100vw - 28px));background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 12px;box-shadow:0 6px 24px rgba(0,0,0,.2);z-index:20;font-size:.8rem}
+#toast .ad{margin:6px 0 0;min-height:56px}#toast .x{top:0;right:6px;font-size:1.3rem}
+</style></head><body>
+<div class="w">
+<header><span class="logo">📷 CleanPhoto</span></header>
+<main>
+<h1>Limpiar metadatos GPS de fotos online</h1>
+<p class="sub">Convierte, comprime y borra la ubicación (EXIF/GPS) de todas tus fotos a la vez. JPG, PNG, WEBP y HEIC de iPhone. Gratis y sin registro.</p>
+<div class="card">
+<label class="drop" id="drop"><input class="file" id="file" type="file" multiple accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif,.jpg,.jpeg,.png,.webp">
+<b>📁 Arrastra tus fotos aquí o toca para elegirlas</b><span>Puedes soltar muchas a la vez · también puedes pegarlas (Ctrl+V)</span></label>
+<noscript><p>Esta herramienta necesita JavaScript.</p></noscript>
+<div class="opts"><label>Tamaño máximo (lado largo)&nbsp;<select id="max"><option value="0">Original</option><option value="3840">3840 px (4K)</option><option value="2560">2560 px</option><option value="1920" selected>1920 px · recomendado</option><option value="1280">1280 px</option><option value="1024">1024 px</option></select></label>
+<label>Calidad JPG&nbsp;<input id="q" type="range" min="60" max="95" value="82"> <b id="qv">82 %</b></label></div>
+<p class="priv">🔒 100 % privado: tus fotos se procesan en tu dispositivo y no se suben a ningún servidor. Límite orientativo: ~50 MB por foto.</p>
+<div id="skip" class="sum"></div>
+<div id="list"></div>
+<div class="sum" id="sum"></div>
+<div class="act" id="act" hidden><button class="btn" id="zip" type="button">Descargar todo (.zip)</button><button class="btn s" id="clr" type="button">Vaciar lista</button></div>
+</div>
+<!-- PEGA AQUÍ TU CÓDIGO DE ADSENSE (banner bajo la herramienta) -->
+<div class="ad h" role="complementary" aria-label="Publicidad">ANUNCIO</div>
+
+<section id="como"><h2>Cómo funciona: limpiar y comprimir fotos en 3 pasos</h2>
+<div class="g3">
+<div class="card"><div class="n">1</div><h3>Arrastra tus fotos</h3><p>Suelta todas las que quieras: JPG, PNG, WEBP o HEIC del iPhone. Se procesan al instante.</p></div>
+<div class="card"><div class="n">2</div><h3>Ajusta si quieres</h3><p>Elige el tamaño máximo y la calidad, o déjalo como viene: 1920 px y 82 %, ideal para portales.</p></div>
+<div class="card"><div class="n">3</div><h3>Descarga</h3><p>Baja todo en un ZIP o una por una. Son JPG ligeros, sin ubicación ni datos de la cámara.</p></div>
+</div></section>
+
+<section id="porque"><h2>Por qué es vital quitar la ubicación de las fotos de propiedades y vehículos</h2>
+<p>Cada foto tomada con un celular guarda, sin que lo notes, datos EXIF: las coordenadas GPS exactas del lugar, la fecha y la hora, y el modelo del teléfono. Si publicas o envías la imagen tal cual, cualquiera puede abrir esos datos y ver dónde se tomó. Algunas plataformas los eliminan al publicar, pero no todas, y por correo o en tu propio sitio web viajan intactos. No dependas de eso.</p>
+<div class="g3">
+<div class="card"><h3>🏠 Inmobiliarias</h3><p>Una foto de una casa vacía o de un cliente que vende publica su dirección exacta y delata cuándo está sola. Limpia las fotos antes de subirlas a portales, redes o WhatsApp.</p></div>
+<div class="card"><h3>🚗 Vendedores de autos</h3><p>Las coordenadas pueden revelar dónde duermes el auto: tu cochera o tu casa. Es información valiosa para quien busca robarlo o contactarte fuera del anuncio.</p></div>
+<div class="card"><h3>📸 Fotógrafos</h3><p>Al entregar adelantos o galerías, los datos pueden exponer la casa del cliente, tu estudio o tus rutas de trabajo. Entrega solo la imagen.</p></div>
+</div>
+<p>Además, comprimir y redimensionar las fotos hace que los portales inmobiliarios y tu página carguen más rápido, y que las publicaciones suban sin errores por exceso de peso.</p></section>
+
+<!-- PEGA AQUÍ TU CÓDIGO DE ADSENSE (anuncio en mitad del contenido) -->
+<div class="ad m" role="complementary" aria-label="Publicidad">ANUNCIO</div>
+
+<section id="faq"><h2>Preguntas frecuentes</h2><details><summary>¿Mis fotos se suben a algún servidor?</summary><p>No. Todo ocurre en tu navegador: las fotos se procesan en tu propio dispositivo y nunca salen de él. Por eso es seguro usarla con fotos de clientes, propiedades o vehículos.</p></details><details><summary>¿Cómo quito la ubicación de las fotos de una propiedad?</summary><p>Arrastra las fotos a la herramienta. Cada imagen se vuelve a guardar como un JPG nuevo sin coordenadas GPS ni datos EXIF, y te avisamos cuáles traían ubicación. Después descárgalas en un ZIP.</p></details><details><summary>¿Funciona con las fotos HEIC del iPhone?</summary><p>Sí. Las fotos HEIC o HEIF se convierten a JPG, el formato que aceptan todos los portales. La primera vez se descarga el motor de conversión (unos 3 MB) y después queda en caché.</p></details><details><summary>¿Se pierde calidad al comprimir?</summary><p>Al convertir a JPG se recomprime la imagen, pero con calidad 82 % y 1920 px la diferencia no se nota en pantalla y el archivo pesa mucho menos. Si necesitas más detalle, sube la calidad hasta 95 %.</p></details><details><summary>¿Se borran realmente todos los metadatos?</summary><p>Sí. La foto se redibuja y se guarda como imagen nueva, así que no se copia ningún dato EXIF, GPS, IPTC ni XMP. Tampoco se conserva el perfil de color, y la orientación queda ya corregida.</p></details><details><summary>¿Hay un límite de fotos o de tamaño?</summary><p>No hay un límite fijo; depende de la memoria de tu dispositivo. Para una foto HEIC se recomienda no pasar de ~50 MB, y en un celular conviene procesar por tandas de unas 50 fotos.</p></details><details><summary>¿Es gratis? ¿Necesito registrarme?</summary><p>Es gratis y no requiere registro ni correo. El sitio se financia con publicidad.</p></details></section>
+</main>
+<footer>© CleanPhoto · Tus fotos nunca salen de tu dispositivo.<!-- TODO: enlaces a Privacidad y Aviso legal (requeridos por AdSense) --></footer>
+</div>
+
+<dialog id="dlg"><button class="x" id="dx" type="button" aria-label="Cerrar">×</button>
+<p><b>¡Listo! Tus fotos se están descargando.</b></p>
+<!-- PEGA AQUÍ TU CÓDIGO DE ADSENSE (pop-up de descarga) -->
+<div class="ad" role="complementary" aria-label="Publicidad">ANUNCIO</div>
+<button class="btn" id="dc" type="button">Cerrar y seguir</button></dialog>
+<aside id="toast" hidden><button class="x" id="tx" type="button" aria-label="Cerrar anuncio">×</button><div class="ad" role="complementary" aria-label="Publicidad">ANUNCIO</div></aside>
+
+<script>
+(function(){"use strict";
+var J="https://cdn.jsdelivr.net/npm/",ZIP=J+"jszip@3.10.1/dist/jszip.min.js",HEIC=J+"heic-to@1.5.2/dist/iife/heic-to.js",EX=J+"exifr@7.1.3/dist/lite.umd.js";
+function $(s){return document.querySelector(s)}
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+var libs={},items=[],uid=0,busy=false,ver=0,tm=0,zipping=false,last=0;
+var list=$("#list"),dlg=$("#dlg");
+function load(src){return libs[src]||(libs[src]=new Promise(function(ok,er){var s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=function(){delete libs[src];er(new Error("load"))};document.head.appendChild(s)}))}
+function isHeic(f){return /\.(heic|heif)$/i.test(f.name)||/hei[cf]/i.test(f.type)}
+function fmt(n){return n<1048576?Math.max(1,Math.round(n/1024))+" KB":(n/1048576).toFixed(1)+" MB"}
+function fname(it){return it.file.name.replace(/\.[^.]*$/,"").replace(/[\\\/:*?"<>|]/g,"_")+"-limpia"}
+async function gpsOf(f){try{await load(EX);var g=await window.exifr.gps(f);return !!(g&&isFinite(g.latitude))}catch(e){return null}}
+async function decode(f){
+ var src=f;
+ if(isHeic(f)){try{await load(HEIC);src=await window.HeicTo({blob:f,type:"image/jpeg",quality:.92})}catch(e){src=f}}
+ try{return await createImageBitmap(src)}catch(e){
+  return await new Promise(function(ok,er){var u=URL.createObjectURL(src),i=new Image();i.onload=function(){URL.revokeObjectURL(u);ok(i)};i.onerror=function(){URL.revokeObjectURL(u);er(new Error("decode"))};i.src=u})}
+}
+async function proc(it){
+ var v=ver;it.st="work";it.msg=isHeic(it.file)&&!libs[HEIC]?"Preparando el motor HEIC (solo la primera vez)…":"Procesando…";render();
+ try{
+  if(it.gps===undefined)it.gps=await gpsOf(it.file);
+  var b=await decode(it.file),w=b.width||b.naturalWidth,h=b.height||b.naturalHeight;
+  var mx=+$("#max").value,k=mx?Math.min(1,mx/Math.max(w,h)):1,cw=Math.max(1,Math.round(w*k)),ch=Math.max(1,Math.round(h*k));
+  var c=document.createElement("canvas");c.width=cw;c.height=ch;
+  var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,cw,ch);x.imageSmoothingQuality="high";x.drawImage(b,0,0,cw,ch);
+  if(b.close)b.close();
+  var blob=await new Promise(function(r){c.toBlob(r,"image/jpeg",+$("#q").value/100)});
+  c.width=c.height=0;
+  if(!blob||blob.type!=="image/jpeg")throw new Error("enc");
+  if(it.url)URL.revokeObjectURL(it.url);
+  it.blob=blob;it.url=URL.createObjectURL(blob);it.dim=cw+"×"+ch;it.st=v===ver?"done":"new";
+ }catch(e){it.st="err"}
+ render();
+}
+async function run(){if(busy)return;busy=true;try{var it;while((it=items.find(function(i){return i.st==="new"})))await proc(it)}finally{busy=false}}
+function render(){
+ list.textContent="";
+ items.forEach(function(it){
+  var r=el("div","row"),th;if(it.url){th=el("img","th");th.src=it.url;th.alt=""}else th=el("div","th");
+  var n=el("div","in"),m=el("div","mt");n.appendChild(el("div","nm",it.file.name));
+  if(it.st==="done"){m.textContent=fmt(it.file.size)+" → "+fmt(it.blob.size)+" · "+it.dim+" · ";m.appendChild(el("span","bd "+(it.gps?"g1":"g0"),it.gps?"📍 GPS eliminado":it.gps===false?"✓ Sin GPS":"✓ Metadatos eliminados"))}
+  else m.textContent=it.st==="err"?"No se pudo procesar esta imagen.":it.st==="work"?it.msg:"En cola…";
+  n.appendChild(m);r.appendChild(th);r.appendChild(n);
+  if(it.st==="done"){var d=el("button","btn s","Descargar");d.type="button";d.onclick=function(){save(fname(it)+".jpg",it.blob)};r.appendChild(d)}
+  list.appendChild(r)});
+ var dn=items.filter(function(i){return i.st==="done"}),a=0,z=0,g=0;
+ dn.forEach(function(i){a+=i.file.size;z+=i.blob.size;if(i.gps)g++});
+ $("#sum").textContent=dn.length?dn.length+" de "+items.length+" listas · "+fmt(a)+" → "+fmt(z)+(g?" · ubicación GPS eliminada en "+g:""):"";
+ $("#act").hidden=!items.length;var zb=$("#zip");zb.disabled=!dn.length||zipping;zb.textContent=zipping?"Creando ZIP…":"Descargar todo (.zip)"+(dn.length?" · "+dn.length+" fotos":"");
+}
+function add(fl){
+ var skip=0;[].forEach.call(fl,function(f){if(/^image\//.test(f.type)||isHeic(f))items.push({file:f,st:"new"});else skip++});
+ $("#skip").textContent=skip?skip+" archivo(s) ignorado(s): solo se aceptan imágenes JPG, PNG, WEBP o HEIC.":"";
+ render();run();
+}
+function fallback(name,blob){var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},4000);return true}
+async function save(name,blob){
+ var d=null,ok=false;try{d=window.claude?await window.claude.use("downloads"):null}catch(e){}
+ if(d){try{await d.save({filename:name,data:blob});ok=true}catch(e){ok=e&&e.code!=="declined"&&e.code!=="rate_limited"?fallback(name,blob):false}}
+ else ok=fallback(name,blob);
+ if(ok)popup();
+}
+function popup(){if(Date.now()-last<20000)return;last=Date.now();setTimeout(function(){if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","")},350)}
+async function zipAll(){
+ var dn=items.filter(function(i){return i.st==="done"});if(!dn.length)return;zipping=true;render();
+ try{await load(ZIP);var z=new window.JSZip(),used={};
+  dn.forEach(function(it){var b=fname(it),n=b,i=1;while(used[n])n=b+"-"+(++i);used[n]=1;z.file(n+".jpg",it.blob)});
+  var out=await z.generateAsync({type:"blob",compression:"STORE"});zipping=false;render();await save("fotos-limpias.zip",out);
+ }catch(e){zipping=false;render();$("#skip").textContent="No se pudo crear el ZIP. Descarga las fotos una por una."}
+}
+function chg(){ver++;items.forEach(function(i){if(i.st!=="work"&&i.st!=="new")i.st="new"});render();clearTimeout(tm);tm=setTimeout(run,350)}
+var drop=$("#drop");
+["dragenter","dragover"].forEach(function(t){window.addEventListener(t,function(e){e.preventDefault();drop.classList.toggle("on",e.target===drop||drop.contains(e.target))})});
+window.addEventListener("dragleave",function(){drop.classList.remove("on")});
+window.addEventListener("drop",function(e){e.preventDefault();drop.classList.remove("on");if(e.dataTransfer&&e.dataTransfer.files.length&&drop.contains(e.target))add(e.dataTransfer.files)});
+$("#file").onchange=function(e){add(e.target.files);e.target.value=""};
+document.addEventListener("paste",function(e){var f=e.clipboardData&&e.clipboardData.files;if(f&&f.length)add(f)});
+$("#max").onchange=chg;$("#q").oninput=function(){$("#qv").textContent=this.value+" %";clearTimeout(tm);tm=setTimeout(chg,300)};
+$("#zip").onclick=zipAll;$("#clr").onclick=function(){ver++;items.forEach(function(i){if(i.url)URL.revokeObjectURL(i.url)});items=[];$("#skip").textContent="";render()};
+function closeD(){if(dlg.close)dlg.close();else dlg.removeAttribute("open")}
+$("#dx").onclick=$("#dc").onclick=closeD;dlg.addEventListener("click",function(e){if(e.target===dlg)closeD()});
+var toast=$("#toast"),seen=false;try{seen=sessionStorage.getItem("cp_t")==="1"}catch(e){}
+if(!seen)setTimeout(function(){toast.hidden=false},7000);
+$("#tx").onclick=function(){toast.hidden=true;try{sessionStorage.setItem("cp_t","1")}catch(e){}};
+toast.hidden=true;render();
+})();
+</script></body></html>
